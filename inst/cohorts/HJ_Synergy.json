@@ -1,0 +1,134 @@
+{
+  "ExpressionLimit": {"Type": "First"},
+  "CollapseSettings": {
+    "CollapseType": "ERA",
+    "EraPad": 0
+  },
+  "CensorWindow": {
+    "StartDate": null,
+    "EndDate": null
+  },
+  "ConceptSets": [{
+    "expression": {"items": [{
+      "isExcluded": false,
+      "concept": {
+        "INVALID_REASON_CAPTION": "Valid",
+        "CONCEPT_ID": 45772824,
+        "STANDARD_CONCEPT": "S",
+        "CONCEPT_CODE": "705637003",
+        "VOCABULARY_ID": "SNOMED",
+        "CONCEPT_NAME": "Drug-eluting coronary artery stent",
+        "DOMAIN_ID": "Device",
+        "STANDARD_CONCEPT_CAPTION": "Standard",
+        "CONCEPT_CLASS_ID": "Physical Object",
+        "INVALID_REASON": "V"
+      },
+      "includeMapped": false,
+      "includeDescendants": false
+    }]},
+    "name": "DES",
+    "id": 0
+  }],
+  "cdmVersionRange": ">=5.0.0",
+  "CensoringCriteria": [],
+  "QualifiedLimit": {"Type": "First"},
+  "InclusionRules": [
+    {
+      "expression": {
+        "CriteriaList": [],
+        "Type": "ALL",
+        "DemographicCriteriaList": [{
+          "Ethnicity": null,
+          "OccurrenceEndDate": null,
+          "Race": null,
+          "Gender": null,
+          "OccurrenceStartDate": null,
+          "Age": {
+            "Op": "gte",
+            "Extent": null,
+            "Value": 18
+          }
+        }],
+        "Groups": [],
+        "Count": null
+      },
+      "name": "over 18",
+      "description": null
+    },
+    {
+      "expression": {
+        "CriteriaList": [{
+          "RestrictVisit": false,
+          "StartWindow": {
+            "UseEventEnd": false,
+            "Start": {
+              "Days": null,
+              "Coeff": -1
+            },
+            "End": {
+              "Days": 1,
+              "Coeff": -1
+            },
+            "UseIndexEnd": false
+          },
+          "IgnoreObservationPeriod": false,
+          "EndWindow": null,
+          "Criteria": {"DeviceExposure": {
+            "OccurrenceEndDate": null,
+            "DeviceTypeExclude": false,
+            "CorrelatedCriteria": null,
+            "CodesetId": 0,
+            "Quantity": null,
+            "UniqueDeviceId": null,
+            "ProviderSpecialty": null,
+            "DeviceSourceConcept": null,
+            "Gender": null,
+            "DeviceType": null,
+            "VisitType": null,
+            "First": null,
+            "OccurrenceStartDate": null,
+            "Age": null
+          }},
+          "Occurrence": {
+            "Type": 0,
+            "CountColumn": null,
+            "IsDistinct": false,
+            "Count": 0
+          }
+        }],
+        "Type": "ALL",
+        "DemographicCriteriaList": [],
+        "Groups": [],
+        "Count": null
+      },
+      "name": "exclude stent",
+      "description": null
+    }
+  ],
+  "PrimaryCriteria": {
+    "CriteriaList": [{"DeviceExposure": {
+      "OccurrenceEndDate": null,
+      "DeviceTypeExclude": false,
+      "CorrelatedCriteria": null,
+      "CodesetId": 0,
+      "Quantity": null,
+      "UniqueDeviceId": {
+        "Op": "contains",
+        "Text": null
+      },
+      "ProviderSpecialty": null,
+      "DeviceSourceConcept": null,
+      "Gender": null,
+      "DeviceType": null,
+      "VisitType": null,
+      "First": null,
+      "OccurrenceStartDate": null,
+      "Age": null
+    }}],
+    "PrimaryCriteriaLimit": {"Type": "First"},
+    "ObservationWindow": {
+      "PostDays": 0,
+      "PriorDays": 0
+    }
+  }
+}
