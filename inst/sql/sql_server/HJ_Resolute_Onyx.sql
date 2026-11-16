@@ -34,7 +34,7 @@ from
 JOIN #Codesets codesets on ((de.device_concept_id = codesets.concept_id and codesets.codeset_id = 0))
 ) C
 
-WHERE C.device_source_value  like '%J8083006%'
+WHERE (C.device_source_value LIKE '%J8083006%' OR C.device_source_concept_id IN (SELECT concept_id FROM @vocabulary_database_schema.CONCEPT WHERE concept_code = 'J8083006'))
 -- End Device Exposure Criteria
 
   ) E

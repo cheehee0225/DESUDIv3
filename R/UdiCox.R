@@ -20,8 +20,12 @@ runUdiCox <- function(outputFolder, exportFolder, databaseId, minCellCount = 5,
     d <- merge(d, cache[[f2]], by =c("personId", "treatment", "cohortStartDate"), all.x = TRUE)
     res[[length(res) + 1]] <- fitUdiCox(d, r, minCellCount)
   }
-  out <- do.call(rbind, res)
-  out <- data.frame(database_id = databaseId, out)
+  if (length(res) == 0) {
+    out <- data.frame(database_id = databaseId,
+                      note = "No UDI pair population (UDI cohorts 980-983 empty or one arm missing)")
+  } else {
+    out <- data.frame(database_id = databaseId, do.call(rbind, res))
+  }
   write.csv(out, file.path(exportFolder, "udi_cox_result.csv"), row.names = FALSE)
   invisible(out)
 }

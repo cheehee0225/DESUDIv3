@@ -69,7 +69,19 @@ exportResults <- function(outputFolder,
                     minCellCount = minCellCount,
                     maxCores = maxCores)
   
-  runUdiCox(outputFolder = outputFolder, exportFolder = exportFolder, databaseId = databaseId, minCellCount = minCellCount)
+  tryCatch(runUdiCox(outputFolder = outputFolder, exportFolder = exportFolder, databaseId = databaseId, minCellCount = minCellCount),
+           error = function(e) {
+             ParallelLogger::logWarn(paste("UDI Cox failed:", conditionMessage(e)))
+             write.csv(data.frame(database_id = databaseId, note = paste("UDI Cox failed:", conditionMessage(e))),
+                       file.path(exportFolder, "udi_cox_result.csv"), row.names = FALSE)
+           })
+  
+  siteCheckFile <- file.path(outputFolder, "site_check.csv")
+  if (file.exists(siteCheckFile)) {
+    siteCheck <- read.csv(siteCheckFile)
+    siteCheck <- data.frame(database_id = databaseId, siteCheck)
+    write.csv(siteCheck, file.path(exportFolder, "site_check.csv"), row.names = FALSE)
+  }
   
   # Add all to zip file -------------------------------------------------------------------------------
   ParallelLogger::logInfo("Adding results to zip file")

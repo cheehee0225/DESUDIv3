@@ -62,6 +62,16 @@
   counts <- merge(counts, data.frame(cohortDefinitionId = cohortsToCreate$cohortId,
                                      cohortName  = cohortsToCreate$name))
   write.csv(counts, file.path(outputFolder, "CohortCounts.csv"))
+
+  # Aggregate site check (cohort sizes, how EDI codes are found, CST building blocks):
+  ParallelLogger::logInfo("Running site check")
+  tryCatch(runSiteCheck(connection = connection,
+                        cdmDatabaseSchema = cdmDatabaseSchema,
+                        vocabularyDatabaseSchema = vocabularyDatabaseSchema,
+                        cohortDatabaseSchema = cohortDatabaseSchema,
+                        cohortTable = cohortTable,
+                        outputFolder = outputFolder),
+           error = function(e) ParallelLogger::logWarn(paste("Site check failed:", conditionMessage(e))))
   
   
 }
