@@ -108,8 +108,16 @@ computeCovariateBalance <- function(row, cmOutputFolder, balanceFolder) {
     cohortMethodData <- CohortMethod::loadCohortMethodData(cohortMethodDataFile)
     strataFile <- file.path(cmOutputFolder, row$strataFile)
     strata <- readRDS(strataFile)
-    balance <- CohortMethod::computeCovariateBalance(population = strata, cohortMethodData = cohortMethodData)
-    saveRDS(balance, outputFileName)
+    if (nrow(strata) == 0 || length(unique(strata$treatment)) < 2) {
+      ParallelLogger::logInfo("Skipping covariate balance (empty or one-arm population): ", outputFileName)
+      return(NULL)
+    }
+    balance <- tryCatch(CohortMethod::computeCovariateBalance(population = strata, cohortMethodData = cohortMethodData),
+                        error = function(e) {
+                          ParallelLogger::logWarn("Covariate balance failed for ", outputFileName, ": ", conditionMessage(e))
+                          NULL
+                        })
+    if (!is.null(balance)) saveRDS(balance, outputFileName)
   }
 }
 

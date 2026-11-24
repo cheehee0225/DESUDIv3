@@ -64,7 +64,13 @@ runSiteCheck <- function(connection,
   }
 
   # 3. Building blocks of the CST-related revascularization outcome (963)
-  rows[[length(rows) + 1]] <- run("cst_component", "CST/AMI condition in IP/ER visit", paste0(
+  rows[[length(rows) + 1]] <- run("cst_component", "AMI or CST condition in IP/ER visit (outcome 963 entry)", paste0(
+    "SELECT COUNT(*) AS n_records, COUNT(DISTINCT co.person_id) AS n_persons ",
+    "FROM @cdm.CONDITION_OCCURRENCE co ",
+    "JOIN @cdm.VISIT_OCCURRENCE v ON co.visit_occurrence_id = v.visit_occurrence_id AND co.person_id = v.person_id ",
+    "WHERE v.visit_concept_id IN (9201, 9203, 262) AND co.condition_concept_id IN ",
+    "(SELECT descendant_concept_id FROM @vocab.CONCEPT_ANCESTOR WHERE ancestor_concept_id IN (312327, 434376, 438170, 444406, 4046022, 4048534, 4108215, 4225958));"))
+    rows[[length(rows) + 1]] <- run("cst_component", "CST concepts only in IP/ER visit", paste0(
     "SELECT COUNT(*) AS n_records, COUNT(DISTINCT co.person_id) AS n_persons ",
     "FROM @cdm.CONDITION_OCCURRENCE co ",
     "JOIN @cdm.VISIT_OCCURRENCE v ON co.visit_occurrence_id = v.visit_occurrence_id AND co.person_id = v.person_id ",
