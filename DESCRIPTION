@@ -1,7 +1,7 @@
 Package: DESUDIv3
 Type: Package
 Title: A Package Skeleton for Comparative Effectiveness Studies
-Version: 1.0.1
+Version: 1.0.3
 Author: Heejin Chang [aut, cre]
 Maintainer: Heejin Chang <cheehee25@yuhs.ac>
 Description: A skeleton package, to be used as a starting point when implementing comparative effect studies.
